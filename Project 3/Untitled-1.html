@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple HTML Calculation Form</title>
+  <style>
+    /* First background image for the entire page */
+    body {
+      
+      background-size: cover;
+      background-position: center center;
+      background-attachment: fixed;
+      font-family: Arial, sans-serif;
+      color: white; /* Ensures text is readable on background */
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Container styling with second background image */
+    .container {
+      width: 80%;
+      margin: 0 auto;
+      padding: 20px;
+      background-image: url('https://example.com/photo2.jpg'); /* Second photo for the container */
+      background-size: cover;
+      background-position: center;
+      background-blend-mode: overlay; /* Ensures the background image blends with content */
+      background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay for readability */
+      border-radius: 8px;
+    }
+
+    .row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .col-6 { width: 50%; }
+    .col-3 { width: 25%; }
+    .col-2 { width: 16.66%; }
+    .row-heading {
+      font-weight: bold;
+      font-size: 1.2em;
+    }
+
+    .my-3 { margin-top: 20px; }
+    .my-4 { margin-top: 30px; }
+    .text-right { text-align: right; }
+    .total-val { font-weight: bold; font-size: 1.3em; }
+
+    input[type="number"] {
+      padding: 5px;
+      font-size: 1em;
+      margin: 5px 0;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      width: 100%;
+    }
+
+  </style>
+</head>
+	
+<body>
+<img src="../images/23314548_fpx.webp">
+<img src ="../images/images.jpg">
+	<img src = "../images/images.jpg">
+  <div class="container mt-4">
+    <div class="row">
+      <div class="col-6 row-heading">Item</div>
+      <div class="col-3 row-heading">Quantity</div>
+      <div class="col-2 row-heading">Price</div>
+    </div>
+
+    <div class="row">
+      <div class="col-6">1. Mademoiselle Coco Chanel</div>
+      <div class="col-3">
+        <input type="number" value="0" class="qty" id="qty_coco" onchange="updatePrice()"/>
+      </div>
+      <div class="col-2">
+        <input type="number" readonly value="0" id="price_coco"/>
+      </div>
+    </div>
+
+    <div class="row my-3">
+      <div class="col-6">2. Dolce & Gabbana</div>
+      <div class="col-3">
+        <input type="number" value="0" class="qty" id="qty_dg" onchange="updatePrice()"/>
+      </div>
+      <div class="col-2">
+        <input type="number" readonly value="0" id="price_dg"/>
+      </div>
+    </div>
+
+    <div class="row my-3">
+      <div class="col-6">3. Narciso Rodriguez Parfum</div>
+      <div class="col-3">
+        <input type="number" value="0" class="qty" id="qty_nr" onchange="updatePrice()"/>
+      </div>
+      <div class="col-2">
+        <input type="number" readonly value="0" id="price_nr"/>
+      </div>
+    </div>
+
+    <div class="row my-3">
+      <div class="col-6">4. Jo Malone London Perfume</div>
+      <div class="col-3">
+        <input type="number" value="0" class="qty" id="qty_jm" onchange="updatePrice()"/>
+      </div>
+      <div class="col-2">
+        <input type="number" readonly value="0" id="price_jm"/>
+      </div>
+    </div>
+
+    <div class="row my-4">
+      <div class="col-9 text-right total">Total</div>
+      <div class="col-2 total-val">
+        <span id="total_value">0</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Prices for each item
+    const prices = {
+      coco: 120, // Example price for Mademoiselle Coco Chanel
+      dg: 150,   // Example price for Dolce & Gabbana
+      nr: 200,   // Example price for Narciso Rodriguez
+      jm: 180    // Example price for Jo Malone London
+    };
+
+    // Function to update the price and total when quantities are changed
+    function updatePrice() {
+      // Get quantity values
+      let qty_coco = document.getElementById('qty_coco').value;
+      let qty_dg = document.getElementById('qty_dg').value;
+      let qty_nr = document.getElementById('qty_nr').value;
+      let qty_jm = document.getElementById('qty_jm').value;
+
+      // Calculate prices
+      let price_coco = qty_coco * prices.coco;
+      let price_dg = qty_dg * prices.dg;
+      let price_nr = qty_nr * prices.nr;
+      let price_jm = qty_jm * prices.jm;
+
+      // Set the price values in the inputs
+      document.getElementById('price_coco').value = price_coco;
+      document.getElementById('price_dg').value = price_dg;
+      document.getElementById('price_nr').value = price_nr;
+      document.getElementById('price_jm').value = price_jm;
+
+      // Calculate and update the total
+      let total = price_coco + price_dg + price_nr + price_jm;
+      document.getElementById('total_value').innerText = total;
+    }
+  </script>
+
+</body>
+</html>

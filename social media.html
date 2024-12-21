@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Social Media</title>
+ 
+	<style>
+	* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  color: #333;
+}
+
+header {
+  background-color: #4CAF50;
+  color: white;
+  padding: 15px;
+  text-align: center;
+}
+
+nav {
+  background-color: #333;
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  padding: 10px 20px;
+  margin: 0 10px;
+  border-radius: 5px;
+}
+
+nav a:hover {
+  background-color: #4CAF50;
+}
+
+.content {
+  max-width: 800px;
+  margin: 20px auto;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.post-form {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+#postInput {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+.feed {
+  margin-top: 20px;
+}
+
+.post {
+  background-color: #fafafa;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 15px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.post-header {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.post-content {
+  margin-bottom: 10px;
+}
+
+.like-button {
+  padding: 5px 10px;
+  background-color: #2196F3;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.like-button:hover {
+  background-color: #1976D2;
+}
+
+.like-count {
+  margin-left: 10px;
+}
+	</style>
+</head>
+<body>
+	<header>
+  	<h1>Social Media App</h1>
+	</header>
+  
+  <!-- Navigation Menu -->
+  <nav>
+    <a href="index.html">Home</a>
+    
+  </nav>
+
+<div class="content">
+  <section class="post-form">
+    <textarea id="postInput" placeholder="What's on your mind?" rows="4"></textarea>
+    <button onclick="createPost()">Post</button>
+  </section>
+
+  <section class="feed" id="feed">
+    <!-- Posts will be displayed here -->
+  </section>
+</div>
+
+<script>
+// Function to create a new post
+function createPost() {
+    const postInput = document.getElementById("postInput");
+    const postContent = postInput.value.trim();
+
+    if (postContent === "") {
+        alert("Please enter some content to post.");
+        return;
+    }
+
+    // Create post elements
+    const post = document.createElement("div");
+    post.classList.add("post");
+
+    const postHeader = document.createElement("div");
+    postHeader.classList.add("post-header");
+    postHeader.textContent = "User Name"; // Static username, can be dynamic later
+
+    const postBody = document.createElement("div");
+    postBody.classList.add("post-content");
+    postBody.textContent = postContent;
+
+    const likeSection = document.createElement("div");
+    const likeButton = document.createElement("button");
+    likeButton.classList.add("like-button");
+    likeButton.textContent = "Like";
+    likeButton.onclick = function() { toggleLike(likeCount); };
+    
+    const likeCount = document.createElement("span");
+    likeCount.classList.add("like-count");
+    likeCount.textContent = "0 Likes";
+
+    likeSection.appendChild(likeButton);
+    likeSection.appendChild(likeCount);
+
+    // Append everything to the post
+    post.appendChild(postHeader);
+    post.appendChild(postBody);
+    post.appendChild(likeSection);
+
+    // Append the post to the feed
+    const feed = document.getElementById("feed");
+    feed.appendChild(post);
+
+    // Clear the input field after posting
+    postInput.value = "";
+}
+
+// Function to toggle like count
+function toggleLike(likeCountElement) {
+    const currentLikes = parseInt(likeCountElement.textContent.split(" ")[0]);
+    likeCountElement.textContent = `${currentLikes + 1} Likes`;
+}
+</script>
+
+</body>
+</html>
+

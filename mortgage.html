@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mortgage Calculator</title>
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #e8e8e8;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Navigation Menu */
+        nav {
+            width: 100%;
+            background-color: #333;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: inline-block; /* Center the menu */
+        }
+
+        nav ul li {
+            display: inline-block;
+            margin-right: 20px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        nav ul li a:hover {
+            text-decoration: underline;
+        }
+
+        .container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #444;
+        }
+
+        input {
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #clear-btn {
+            background-color: #f44336;
+        }
+
+        #clear-btn:hover {
+            background-color: #e53935;
+        }
+
+        #result {
+            margin-top: 20px;
+            display: none;
+            text-align: center;
+        }
+
+        #result span {
+            font-size: 24px;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+
+        .error {
+            color: red;
+            font-size: 12px;
+        }
+
+    </style>
+</head>
+<body>
+
+<!-- Navigation Menu -->
+<nav>
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about me.html">About</a></li>
+        <li><a href="project 1.html">Project 1</a></li>
+    </ul>
+</nav>
+
+<div class="container">
+    <h1>Mortgage Calculator</h1>
+    <form id="mortgage-form">
+        <label for="mortgage-amount">Mortgage Amount ($):</label>
+        <input type="number" id="mortgage-amount" placeholder="Enter mortgage amount" required>
+        <div id="mortgage-error" class="error"></div>
+
+        <label for="interest-rate">Annual Interest Rate (%):</label>
+        <input type="number" id="interest-rate" step="0.01" placeholder="Enter interest rate" required>
+        <div id="interest-rate-error" class="error"></div>
+
+        <label for="loan-term">Loan Term (years):</label>
+        <input type="number" id="loan-term" placeholder="Enter loan term in years" required>
+        <div id="loan-term-error" class="error"></div>
+
+        <div>
+            <button type="submit">Calculate</button>
+            <button type="reset" id="clear-btn">Clear</button>
+        </div>
+    </form>
+
+    <div id="result">
+        <p>Your Monthly Payment is: $<span id="monthly-payment">0</span></p>
+    </div>
+</div>
+
+<script>
+    // Function to clear error messages
+    function clearErrors() {
+        document.getElementById("mortgage-error").textContent = "";
+        document.getElementById("interest-rate-error").textContent = "";
+        document.getElementById("loan-term-error").textContent = "";
+    }
+
+    document.getElementById("mortgage-form").addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevent form from submitting and refreshing page
+        clearErrors(); // Clear previous errors
+
+        // Get values from inputs
+        const mortgageAmount = parseFloat(document.getElementById("mortgage-amount").value);
+        const interestRate = parseFloat(document.getElementById("interest-rate").value) / 100;
+        const loanTerm = parseInt(document.getElementById("loan-term").value);
+
+        // Input validation
+        let hasError = false;
+        if (isNaN(mortgageAmount) || mortgageAmount <= 0) {
+            document.getElementById("mortgage-error").textContent = "Please enter a valid mortgage amount.";
+            hasError = true;
+        }
+        if (isNaN(interestRate) || interestRate <= 0) {
+            document.getElementById("interest-rate-error").textContent = "Please enter a valid interest rate.";
+            hasError = true;
+        }
+        if (isNaN(loanTerm) || loanTerm <= 0) {
+            document.getElementById("loan-term-error").textContent = "Please enter a valid loan term.";
+            hasError = true;
+        }
+
+        if (hasError) return; // Stop if there are any errors
+
+        // Mortgage calculation (fixed-rate mortgage formula)
+        const monthlyInterestRate = interestRate / 12;
+        const totalPayments = loanTerm * 12;
+
+        const monthlyPayment = (mortgageAmount * monthlyInterestRate) / (1 - Math.pow(1 + monthlyInterestRate, -totalPayments));
+
+        // Show the result
+        document.getElementById("monthly-payment").textContent = monthlyPayment.toFixed(2);
+        document.getElementById("result").style.display = 'block';
+    });
+
+    // Reset form and result
+    document.getElementById("clear-btn").addEventListener("click", function() {
+        document.getElementById("result").style.display = 'none';
+        clearErrors();
+    });
+</script>
+
+</body>
+</html>
+
+

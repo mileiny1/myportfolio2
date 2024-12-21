@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            height: 100vh;
+            background-color: #f4f4f9;
+        }
+
+        /* Side Menu Styles */
+        #menu {
+            width: 250px;
+            background-color: #4CAF50;
+            padding: 20px;
+            color: white;
+            position: fixed;
+            height: 100%;
+        }
+
+        #menu h2 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        #menu ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        #menu ul li {
+            margin-bottom: 20px;
+        }
+
+        #menu ul li a {
+            text-decoration: none;
+            color: white;
+            font-size: 18px;
+            display: block;
+            text-align: center;
+        }
+
+        #menu ul li a:hover {
+            background-color: #45a049;
+            padding: 10px;
+        }
+
+        /* Main Content Styles */
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+            width: 100%;
+        }
+
+        h1, h2, h3 {
+            text-align: center;
+        }
+
+        .invoice-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        .invoice-info label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .invoice-info input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .invoice-preview table {
+            width: 100%;
+            margin-top: 10px;
+            margin-bottom: 20px;
+            border-collapse: collapse;
+        }
+
+        .invoice-preview table, .invoice-preview th, .invoice-preview td {
+            border: 1px solid #ddd;
+        }
+
+        .invoice-preview th, .invoice-preview td {
+            padding: 8px;
+            text-align: left;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        footer p {
+            margin-bottom: 5px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Side Navigation Menu -->
+    <div id="menu">
+        <h2>Menu</h2>
+        <ul>
+            <li><a href="javascript:void(0);" onclick="showSection('invoice-generator')">Invoice Generator</a></li>
+			   <li><a href="index.html" target="_self">Home</a></li>
+                <li><a href="project 1.html" target="_blank">MPG Calculator</a></li>
+                <li><a href="mortgage.html" target="_blank">Mortgage Calculator</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+
+        <!-- Invoice Generator Section -->
+        <div class="invoice-container" id="invoice-generator">
+            <h1>Invoice Generator</h1>
+
+            <!-- Invoice Information Form -->
+            <div class="invoice-info">
+                <label for="client-name">Client Name:</label>
+                <input type="text" id="client-name" placeholder="Enter Client Name">
+
+                <label for="client-address">Client Address:</label>
+                <input type="text" id="client-address" placeholder="Address, City, ZIP Code">
+
+                <label for="client-phone">Client Phone:</label>
+                <input type="text" id="client-phone" placeholder="(123) 456 7890">
+
+                <label for="item-description">Item Description:</label>
+                <input type="text" id="item-description" placeholder="Enter Item Description">
+
+                <label for="item-amount">Amount:</label>
+                <input type="number" id="item-amount" placeholder="Enter Amount">
+
+                <button onclick="addItem()">Add Item</button>
+            </div>
+
+            <!-- Invoice Preview -->
+            <div class="invoice-preview" id="invoice-preview">
+                <h2>Invoice</h2>
+                <p><strong>Invoice #:</strong> 20241216-001</p>
+                <p><strong>Date:</strong> <span id="invoice-date"></span></p>
+                <p><strong>Company:</strong> Mileiny Nolasco</p>
+                <p>Address: 215 E 164th St Bronx Ny 10456</p>
+                <p>Phone: +1(347)596-9308</p>
+                <p>Email: mileinygreys@gmail.com</p>
+
+                <h3>Bill To:</h3>
+                <p><strong>Name:</strong> <span id="invoice-client-name"></span></p>
+                <p><strong>Address:</strong> <span id="invoice-client-address"></span></p>
+                <p><strong>Phone:</strong> <span id="invoice-client-phone"></span></p>
+
+                <h3>Items:</h3>
+                <table id="items-table">
+                    <tr>
+                        <th>Item Description</th>
+                        <th>Amount</th>
+                    </tr>
+                </table>
+
+                <p><strong>Subtotal:</strong> $<span id="subtotal">0.00</span></p>
+                <p><strong>Tax (10%):</strong> $<span id="tax">0.00</span></p>
+                <p><strong>Total:</strong> $<span id="total">0.00</span></p>
+
+                <footer>
+                    <p>© 2024 Mileiny Nolasco</p>
+                </footer>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        let subtotal = 0;
+
+        // Function to add an item to the invoice
+        function addItem() {
+            const clientName = document.getElementById('client-name').value;
+            const clientAddress = document.getElementById('client-address').value;
+            const clientPhone = document.getElementById('client-phone').value;
+            const itemDescription = document.getElementById('item-description').value;
+            const itemAmount = parseFloat(document.getElementById('item-amount').value);
+
+            if (!itemDescription || isNaN(itemAmount) || itemAmount <= 0) {
+                alert("Please enter valid item description and amount.");
+                return;
+            }
+
+            // Add item to the invoice table
+            const table = document.getElementById('items-table');
+            const newRow = table.insertRow();
+            newRow.innerHTML = `<td>${itemDescription}</td><td>$${itemAmount.toFixed(2)}</td>`;
+
+            // Update totals
+            subtotal += itemAmount;
+            const tax = subtotal * 0.10;
+            const total = subtotal + tax;
+
+            // Update preview section
+            document.getElementById('invoice-client-name').textContent = clientName;
+            document.getElementById('invoice-client-address').textContent = clientAddress;
+            document.getElementById('invoice-client-phone').textContent = clientPhone;
+            document.getElementById('subtotal').textContent = subtotal.toFixed(2);
+            document.getElementById('tax').textContent = tax.toFixed(2);
+            document.getElementById('total').textContent = total.toFixed(2);
+
+            // Update invoice date
+            const date = new Date().toLocaleDateString();
+            document.getElementById('invoice-date').textContent = date;
+        }
+
+        // Function to display the correct section
+        function showSection(section) {
+            // Hide all sections
+            document.getElementById('invoice-generator').style.display = 'none';
+
+            // Show the selected section
+            document.getElementById(section).style.display = 'block';
+        }
+
+        // Default to showing the invoice generator section
+        showSection('invoice-generator');
+    </script>
+
+</body>
+</html>
